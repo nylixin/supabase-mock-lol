@@ -140,13 +140,13 @@ async function loginUser(event) {
     // getting user input
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    document.getElementById("error-message").innerText = "";
-
     console.log("email:", email);
     console.log("pass entered:", password.length > 0 ? "[hidden]" : "(empty)");
+    console.log("calling signinwithpassword");
+
+    document.getElementById("error-message").innerText = "";
 
     try {
-        console.log("calling signInWithPassword");
         const {data, error} = await window.supabase.auth.signInWithPassword({
             email: email,
             password: password,
@@ -160,43 +160,14 @@ async function loginUser(event) {
             return;
         }
 
-        if (!data.user || !data.session)
-        {
-            console.warn("login succeeded but session or user missing");
-            document.getElementById("error-message").innerText = "login failed: no user/session returned.";
-            return;
-        }
-
-        console.log("Login successful, redirecting now ");
+        console.log("Login successful, ", data);
         alert("login successful");
+
         window.location.href = "projListLoggedIn.html";
-        } catch (error) {
+        return;
+
+        } catch (err) {
             console.error("Supabase Connection Issue: ", error);
             document.getElementById("error-message").innerText = "login failed: " + error.message;
         }
-
-    // clearing error messages
-    //document.getElementById("error-message").innerText = "";
-
-    // logging in with supabase authentication
-    /*try {
-        const {data, error} = await window.supabase.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
-        if (error)
-        {
-            console.error("Login Error: ", error);
-            document.getElementById("error-message").innerText = "Login Failed: " + error.message;
-            return;
-        }
-        console.log("Login Successful: ", data);
-        alert("Login successful");
-        // re-directed to logged in page
-        window.location.href = "projListLoggedIn.html";
-        } catch (error) {
-            console.error("Supabase Connection Issue: ", error);
-            document.getElementById("error-message").innerText = "Login Failed: " + error.message;
-        }*/
 }
