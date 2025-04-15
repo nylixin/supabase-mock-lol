@@ -157,21 +157,25 @@ async function loginUser(event) {
             errorDisplay.innerText = "Login failed: " + error.message;
             return;
         }
-        
+
+        // 🔍 Explicitly check session (important after signInWithPassword)
         const {
             data: { session },
-            error: sessionError,
+            error: sessionError
         } = await window.supabase.auth.getSession();
 
+        console.log("Session check:", session, sessionError);
+
         if (sessionError || !session) {
-            console.error("Session error:", sessionError);
-            errorDisplay.innerText = "Login failed: no active session.";
+            errorDisplay.innerText = "Login failed: session not established.";
+            console.error("Session error or empty:", sessionError);
             return;
         }
 
-        console.log("Login success:", data);
+        console.log("✅ Session valid, redirecting to projListLoggedIn.html...");
         alert("Login successful!");
-        //window.location.href = "projListLoggedIn.html";
+        window.location.href = "projListLoggedIn.html";
+
     } catch (err) {
         console.error("Unexpected error:", err.message);
         errorDisplay.innerText = "Unexpected error: " + err.message;
