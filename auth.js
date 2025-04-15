@@ -157,6 +157,17 @@ async function loginUser(event) {
             errorDisplay.innerText = "Login failed: " + error.message;
             return;
         }
+        
+        const {
+            data: { session },
+            error: sessionError,
+        } = await window.supabase.auth.getSession();
+
+        if (sessionError || !session) {
+            console.error("Session error:", sessionError);
+            errorDisplay.innerText = "Login failed: no active session.";
+            return;
+        }
 
         console.log("Login success:", data);
         alert("Login successful!");
