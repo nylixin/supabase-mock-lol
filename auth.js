@@ -135,39 +135,34 @@ window.onload = function()
 async function loginUser(event) {
     event.preventDefault();
 
-    console.log("login attempt started");
-
-    // getting user input
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    console.log("email:", email);
-    console.log("pass entered:", password.length > 0 ? "[hidden]" : "(empty)");
-    console.log("calling signinwithpassword");
+    const errorDisplay = document.getElementById("error-message");
 
-    document.getElementById("error-message").innerText = "";
+    console.log("login attempt started");
+    console.log("email:", email);
+    console.log("pass entered: [hidden]");
+    console.log("calling signInWithPassword");
 
     try {
-        const {data, error} = await window.supabase.auth.signInWithPassword({
+        const { data, error } = await window.supabase.auth.signInWithPassword({
             email: email,
             password: password,
         });
-    
-        console.log("Returned from SignInWithPassword:", data, error);
 
-        if(error) {
-            console.error("Login Error: ", error.message);
-            document.getElementById("error-message").innerText="Login Failed" + error.message;
+        console.log("Returned from signInWithPassword:", data, error);
+
+        if (error) {
+            console.error("Login error:", error.message);
+            errorDisplay.innerText = "Login failed: " + error.message;
             return;
         }
 
-        console.log("Login successful, ", data);
-        alert("login successful");
-
+        console.log("Login success:", data);
+        alert("Login successful!");
         window.location.href = "projListLoggedIn.html";
-        return;
-
-        } catch (err) {
-            console.error("Supabase Connection Issue: ", error);
-            document.getElementById("error-message").innerText = "login failed: " + error.message;
-        }
+    } catch (err) {
+        console.error("Unexpected error:", err.message);
+        errorDisplay.innerText = "Unexpected error: " + err.message;
+    }
 }
