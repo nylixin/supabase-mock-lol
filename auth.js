@@ -148,22 +148,28 @@ async function loginUser(event) {
             password: password,
         });
     
-    console.log("Returned from SignInWithPassword:", data, error);
+        console.log("Returned from SignInWithPassword:", data, error);
 
-    if(error) {
-        console.error("Login Error: ", error);
-        document.getElementById("error-message").innerText="Login Failed" + error.message;
-        return;
-    }
+        if(error) {
+            console.error("Login Error: ", error.message);
+            document.getElementById("error-message").innerText="Login Failed" + error.message;
+            return;
+        }
 
-    console.log("Login successful: ", data);
-    alert("login successful");
-    window.location.href = "projListLoggedIn.html";
-    } catch (error)
-    {
-        console.error("Supabase Connection Issue: ", error);
-        document.getElementById("error-message").innerText = "login failed: " + error.message;
-    }
+        if (!data.user || !data.session)
+        {
+            console.warn("login succeeded but session or user missing");
+            document.getElementById("error-message").innerText = "login failed: no user/session returned.";
+            return;
+        }
+
+        console.log("Login successful, redirecting now ");
+        alert("login successful");
+        window.location.href = "projListLoggedIn.html";
+        } catch (error) {
+            console.error("Supabase Connection Issue: ", error);
+            document.getElementById("error-message").innerText = "login failed: " + error.message;
+        }
 
     // clearing error messages
     //document.getElementById("error-message").innerText = "";
