@@ -9,6 +9,15 @@ window.onload = function()
     
     console.log("Supabase Initialized: ", window.supabase);
 
+    // check if user is alr signed in
+    window.supabase.auth.getUser().then(({data: {user}}) => {
+        if (user)
+        {
+            console.log("Already signed in. Redirecting..");
+            window.location.replace("projListLoggedIn.html");
+        }
+    });
+
     // Register Function
     // Regisers in Supabase auth.users
     window.signUpUser = async function (email, password, firstName, lastName, bio="") {
