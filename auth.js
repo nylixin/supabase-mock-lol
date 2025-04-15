@@ -160,7 +160,7 @@ async function loginUser(event) {
 
         console.log("Login success:", data);
         alert("Login successful!");
-        window.location.href = "projListLoggedIn.html";
+        //window.location.href = "projListLoggedIn.html";
     } catch (err) {
         console.error("Unexpected error:", err.message);
         errorDisplay.innerText = "Unexpected error: " + err.message;
