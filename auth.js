@@ -60,7 +60,10 @@ window.onload = function()
     window.googleSignInAuth = async function () {
         try {
             const {data, error} = await window.supabase.auth.signInWithOAuth({
-                provider: 'google'
+                provider: 'google',
+                options: {
+                    redirectTo: 'https://nylixin.github.io/supabase-mock-lol/loginPageMockSupa.html'
+                }
             });
 
             if (error)
@@ -96,8 +99,8 @@ window.onload = function()
                 .from("profiles")
                 .insert([{
                     id: user.id,
-                    firstname: user_metadata?.first_name || "",
-                    lastname: user_metadata?.last_name || "",
+                    firstname: user_metadata?.given_name || "",
+                    lastname: user_metadata?.family_name || "",
                     bio: ""
                 }]);
 
@@ -109,6 +112,8 @@ window.onload = function()
             } else {
                 console.log("User profile already active");
             }
+            
+            window.history.replaceState({}, document.title, window.location.pathname);
 
             window.location.href = "projListLoggedIn.html";
         }
