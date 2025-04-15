@@ -142,7 +142,11 @@ async function loginUser(event) {
     const password = document.getElementById("password").value;
     document.getElementById("error-message").innerText = "";
 
+    console.log("email:", email);
+    console.log("pass entered:", password.length > 0 ? "[hidden]" : "(empty)");
+
     try {
+        console.log("calling signInWithPassword");
         const {data, error} = await window.supabase.auth.signInWithPassword({
             email: email,
             password: password,
