@@ -10,6 +10,17 @@ window.addEventListener("load", async function () {
     
     console.log("Supabase Initialized: ", window.supabase);
 
+    // ADDED BC IM USING GITHUB PAGES
+    this.setTimeout(async () => {
+        const { data: { user } } = await window.supabase.auth.getUser();
+        if (user){
+            console.log("got dat session! redirecting now");
+            window.location.replace("projListLoggedIn.html");
+        } else {
+            console.log("no cache, show login");
+        }
+    }, 200);
+
     // check if user is alr signed in
     const { data: {user}} = await window.supabase.auth.getUser();
     if (user) 
