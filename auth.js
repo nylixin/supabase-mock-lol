@@ -140,12 +140,36 @@ async function loginUser(event) {
     // getting user input
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-
-    // clearing error messages
     document.getElementById("error-message").innerText = "";
 
-    // logging in with supabase authentication
     try {
+        const {data, error} = await window.supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+        });
+    
+    console.log("Returned from SignInWithPassword:", data, error);
+
+    if(error) {
+        console.error("Login Error: ", error);
+        document.getElementById("error-message").innerText="Login Failed" + error.message;
+        return;
+    }
+
+    console.log("Login successful: ", data);
+    alert("login successful");
+    window.location.href = "projListLoggedIn.html";
+    } catch (error)
+    {
+        console.error("Supabase Connection Issue: ", error);
+        document.getElementById("error-message").innerText = "login failed: " + error.message;
+    }
+
+    // clearing error messages
+    //document.getElementById("error-message").innerText = "";
+
+    // logging in with supabase authentication
+    /*try {
         const {data, error} = await window.supabase.auth.signInWithPassword({
             email: email,
             password: password
@@ -164,5 +188,5 @@ async function loginUser(event) {
         } catch (error) {
             console.error("Supabase Connection Issue: ", error);
             document.getElementById("error-message").innerText = "Login Failed: " + error.message;
-        }
+        }*/
 }
